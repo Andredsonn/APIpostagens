@@ -6,10 +6,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 
 namespace APIpostagens.ViewModels
 {
-    public class PostagensViewModels : ObservableObject
+    public partial class PostagensViewModels : ObservableObject
     {
         [ObservableProperty]
         public int userId;          //public int UserId { get; set; }
@@ -22,12 +23,19 @@ namespace APIpostagens.ViewModels
 
         //método "Exibir na tela"
 
+        public ICommand CarregaPostagensCommand => new Command(async () => CarregaPostagens());
+
         public async void CarregaPostagens()
         {
             List<Postagem> listar = new List<Postagem>();
             listar = await new PostagensService().GetPostagens();
-        }
 
+            Id = listar[0].Id;
+            Title = listar[0].Title;
+            Body = listar[0].Body;
+
+
+        }
 
 
     }
